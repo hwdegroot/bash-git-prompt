@@ -513,12 +513,13 @@ function updatePrompt() {
     __chk_gitvar_status 'CLEAN'      '-eq 1'   -
     __add_status        "$ResetColor$GIT_PROMPT_SUFFIX"
 
-    NEW_PROMPT="$(gp_add_virtualenv_to_prompt)$PROMPT_START$($prompt_callback)$STATUS$PROMPT_END"
+    #NEW_PROMPT="$(gp_add_virtualenv_to_prompt)$PROMPT_START$($prompt_callback)$STATUS$PROMPT_END"
+    NEW_PROMPT="\[\033[01;32m\]\u\[\033[00;37m\]@\h\[\033[00m\]:\[\033[01;35m\]\w\[\033[00m\]${STATUS}\[\033[01;33m\] \$ \[\033[00m\]"
   else
     NEW_PROMPT="$EMPTY_PROMPT"
   fi
 
-  PS1="${NEW_PROMPT//_LAST_COMMAND_INDICATOR_/${LAST_COMMAND_INDICATOR}${ResetColor}}"
+  PS1="${NEW_PROMPT//_LAST_COMMAND_INDICATOR_/}"
 }
 
 # Helper function that returns virtual env information to be set in prompt
