@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-function async_run() {
+async_run() {
   {
     eval "$@" &> /dev/null
   }&
 }
 
-function git_prompt_dir() {
+git_prompt_dir() {
   # assume the gitstatus.sh is in the same directory as this script
   # code thanks to http://stackoverflow.com/questions/59895
   if [ -z "$__GIT_PROMPT_DIR" ]; then
@@ -20,11 +20,11 @@ function git_prompt_dir() {
   fi
 }
 
-function echoc() {
+echoc() {
   echo -e "${1}$2${ResetColor}" | sed 's/\\\]//g'  | sed 's/\\\[//g'
 }
 
-function get_theme() {
+get_theme() {
   local CUSTOM_THEME_FILE="${HOME}/.git-prompt-colors.sh"
   local DEFAULT_THEME_FILE="${__GIT_PROMPT_DIR}/themes/Default.bgptheme"
 
@@ -66,14 +66,14 @@ function get_theme() {
   fi
 }
 
-function git_prompt_load_theme() {
+git_prompt_load_theme() {
   get_theme
   local DEFAULT_THEME_FILE="${__GIT_PROMPT_DIR}/themes/Default.bgptheme"
   source "${DEFAULT_THEME_FILE}"
   source "${__GIT_PROMPT_THEME_FILE}"
 }
 
-function git_prompt_list_themes() {
+git_prompt_list_themes() {
   git_prompt_dir
   get_theme
 
@@ -94,7 +94,7 @@ function git_prompt_list_themes() {
   fi
 }
 
-function git_prompt_make_custom_theme() {
+git_prompt_make_custom_theme() {
   if [[ -r "${HOME}/.git-prompt-colors.sh" ]]; then
     echoc ${Red} "You alread have created a custom theme!"
   else
@@ -131,7 +131,7 @@ function git_prompt_make_custom_theme() {
 #
 # Return 0 (success) if ENVAR not already defined, 1 (failure) otherwise.
 
-function gp_set_file_var() {
+gp_set_file_var() {
   local envar="$1"
   local file="$2"
   if eval "[[ -n \"\$$envar\" && -r \"\$$envar\" ]]" ; then # is envar set to a readable file?
@@ -154,7 +154,7 @@ function gp_set_file_var() {
 # return 0 (true) if any FILEPATH is readable, set ENVAR to it
 # return 1 (false) if not
 
-function gp_maybe_set_envar_to_path() {
+gp_maybe_set_envar_to_path() {
   local envar="$1"
   shift
   local file
@@ -197,7 +197,7 @@ gp_format_exit_status() {
   fi
 }
 
-function git_prompt_config() {
+git_prompt_config() {
   #Checking if root to change output
   _isroot=false
   [[ $UID -eq 0 ]] && _isroot=true
@@ -287,18 +287,18 @@ function git_prompt_config() {
   unset GIT_BRANCH
 }
 
-function setLastCommandState() {
+setLastCommandState() {
   GIT_PROMPT_LAST_COMMAND_STATE=$?
 }
 
-function we_are_on_repo() {
+we_are_on_repo() {
   if [[ -e "$(git rev-parse --git-dir 2> /dev/null)" ]]; then
     echo 1
   fi
   echo 0
 }
 
-function update_old_git_prompt() {
+update_old_git_prompt() {
   local in_repo=$(we_are_on_repo)
   if [[ $GIT_PROMPT_OLD_DIR_WAS_GIT = 0 ]]; then
     OLD_GITPROMPT=$PS1
@@ -307,7 +307,7 @@ function update_old_git_prompt() {
   GIT_PROMPT_OLD_DIR_WAS_GIT=$in_repo
 }
 
-function setGitPrompt() {
+setGitPrompt() {
   update_old_git_prompt
 
   local repo=$(git rev-parse --show-toplevel 2> /dev/null)
@@ -360,7 +360,7 @@ function setGitPrompt() {
 # some versions of find do not have -mmin
 _have_find_mmin=1
 
-function olderThanMinutes() {
+olderThanMinutes() {
   local matches
   local find_exit_code
 
@@ -399,7 +399,7 @@ function olderThanMinutes() {
   fi
 }
 
-function checkUpstream() {
+checkUpstream() {
   local GIT_PROMPT_FETCH_TIMEOUT
   git_prompt_config
 
@@ -416,7 +416,7 @@ function checkUpstream() {
   fi
 }
 
-function replaceSymbols() {
+replaceSymbols() {
   if [[ -z ${GIT_PROMPT_SYMBOLS_NO_REMOTE_TRACKING} ]]; then
     GIT_PROMPT_SYMBOLS_NO_REMOTE_TRACKING=L
   fi
@@ -428,7 +428,7 @@ function replaceSymbols() {
   echo ${VALUE2//_PREHASH_/${GIT_PROMPT_SYMBOLS_PREHASH}}
 }
 
-function updatePrompt() {
+updatePrompt() {
   local LAST_COMMAND_INDICATOR
   local PROMPT_LEADING_SPACE
   local PROMPT_START
@@ -524,7 +524,7 @@ function updatePrompt() {
 
 # Helper function that returns virtual env information to be set in prompt
 # Honors virtualenvs own setting VIRTUAL_ENV_DISABLE_PROMPT
-function gp_add_virtualenv_to_prompt {
+gp_add_virtualenv_to_prompt() {
   local ACCUMULATED_VENV_PROMPT=""
   local VENV=""
   if [[ -n "$VIRTUAL_ENV" && -z "${VIRTUAL_ENV_DISABLE_PROMPT-}" ]]; then
@@ -540,12 +540,12 @@ function gp_add_virtualenv_to_prompt {
 
 # Use exit status from declare command to determine whether input argument is a
 # bash function
-function is_function {
+is_function() {
   declare -Ff "$1" >/dev/null;
 }
 
 # Helper function that truncates $PWD depending on window width
-function gp_truncate_pwd {
+gp_truncate_pwd() {
   local tilde="~"
   local newPWD="${PWD/#${HOME}/${tilde}}"
   local pwdmaxlen=$((${COLUMNS:-80}/3))
@@ -554,15 +554,15 @@ function gp_truncate_pwd {
 }
 
 # Sets the window title to the given argument string
-function gp_set_window_title {
+gp_set_window_title() {
   echo -ne "\[\033]0;"$@"\007\]"
 }
 
-function prompt_callback_default {
+prompt_callback_default() {
   return
 }
 
-function gp_install_prompt {
+gp_install_prompt() {
   if [ -z "$OLD_GITPROMPT" ]; then
     OLD_GITPROMPT=$PS1
   fi
