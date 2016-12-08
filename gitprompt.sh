@@ -514,7 +514,7 @@ updatePrompt() {
     __add_status        "$ResetColor$GIT_PROMPT_SUFFIX"
 
     #NEW_PROMPT="$(gp_add_virtualenv_to_prompt)$PROMPT_START$($prompt_callback)$STATUS$PROMPT_END"
-    NEW_PROMPT="\[\033[01;32m\]\u\[\033[00;37m\]@\h\[\033[00m\]:\[\033[01;35m\]\w\[\033[00m\]${STATUS}\[\033[01;33m\] \$ \[\033[00m\]"
+    NEW_PROMPT="$(gp_add_virtualenv_to_prompt)\[\033[01;32m\]\u\[\033[00;37m\]@\h\[\033[00m\]:\[\033[01;35m\]\w\[\033[00m\]${STATUS}\[\033[01;33m\] \$ \[\033[00m\]"
   else
     NEW_PROMPT="$EMPTY_PROMPT"
   fi
